@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "types": [
+      "node"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "baseUrl": "./app/",
+    "paths": {
+      "~lib/*": [
+        "lib/*"
+      ],
+      "~actions/*": [
+        "actions/*"
+      ],
+      "~types": [
+        "lib/types.ts"
+      ],
+      "~consts": [
+        "lib/consts.ts"
+      ],
+      "~db": [
+        "lib/db.ts"
+      ],
+      "~events/*": [
+        "events/*"
+      ],
+      "~routes": [
+        "routes/index.ts"
+      ],
+      "~models/*": [
+        "models/*"
+      ],
+      "~tables": [
+        "../drizzle/schema.ts"
+      ],
+    }
+  }
+}

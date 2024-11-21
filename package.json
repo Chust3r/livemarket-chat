@@ -1,0 +1,27 @@
+{
+  "name": "livemarket-chat",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch app/index.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:show": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@libsql/client": "^0.14.0",
+    "argon2": "^0.41.1",
+    "better-sqlite3": "^11.5.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.36.3",
+    "hono": "^4.6.10",
+    "jose": "^5.9.6",
+    "valibot": "1.0.0-beta.7"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/node": "^20.11.17",
+    "drizzle-kit": "^0.28.1",
+    "tsx": "^4.19.2"
+  }
+}
