@@ -21,3 +21,10 @@ export const registerSchema = object({
 		)
 	),
 })
+
+//→ LOGIN SCHEMA
+
+export const loginSchema = object({
+	email: pipe(string(), email('You must provide a valid email address.')),
+	password: string(),
+})
