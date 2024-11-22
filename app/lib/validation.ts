@@ -1,4 +1,14 @@
-import { email, object, pipe, safeParse, string, regex } from 'valibot'
+import {
+	email,
+	object,
+	pipe,
+	safeParse,
+	string,
+	regex,
+	optional,
+	picklist,
+	url,
+} from 'valibot'
 
 export const validate = safeParse
 
@@ -27,4 +37,23 @@ export const registerSchema = object({
 export const loginSchema = object({
 	email: pipe(string(), email('You must provide a valid email address.')),
 	password: string(),
+})
+
+// → UPDATE USER SCHEMA
+
+export const updateUserSchema = object({
+	username: optional(
+		pipe(
+			string(),
+			regex(
+				/^(?!_)(?!.*__)[a-zA-Z0-9_]{5,20}$/,
+				'Username must be 5-20 characters long, can only contain letters, numbers, and underscores, and cannot start or end with an underscore.'
+			)
+		)
+	),
+	email: optional(
+		pipe(string(), email('You must provide a valid email address.'))
+	),
+	status: optional(pipe(string(), picklist(['online', 'offline'], 'online'))),
+	avatarUrl: optional(pipe(string(), url())),
 })
