@@ -1,7 +1,9 @@
+import { eq } from 'drizzle-orm'
 import { db } from '~db'
 import { users } from '~tables'
+import type { User } from '~types'
 
-interface User {
+interface IUser {
 	username: string
 	email: string
 	password: string
@@ -15,7 +17,7 @@ export const getUserByEmail = async (email: string) => {
 	return user
 }
 
-export const createUser = async (user: User) => {
+export const createUser = async (user: IUser) => {
 	const createdUser = await db.insert(users).values(user).returning({
 		id: users.id,
 		email: users.email,
@@ -40,4 +42,22 @@ export const getUserInfo = async (id: string) => {
 	})
 
 	return user
+}
+
+export const updateUserInfo = async (id: string, data: Partial<User>) => {
+	const userUpdated = await db
+		.update(users)
+		.set(data)
+		.where(eq(users.id, id))
+		.returning({
+			id: users.id,
+			email: users.email,
+			username: users.username,
+			status:users.status,
+			avatarUrl: users.avatarUrl,
+			createdAt: users.createdAt,
+			updatedAt: users.updatedAt,
+		})
+
+	return userUpdated
 }
