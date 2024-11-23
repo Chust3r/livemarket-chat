@@ -31,7 +31,7 @@ class PocketBaseStorage implements Storage {
 		try {
 			const res = await pb.collection('storage').delete(id)
 
-			return !res
+			return !!res
 		} catch (e) {
 			return false
 		}

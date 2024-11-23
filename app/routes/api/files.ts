@@ -45,3 +45,37 @@ filesRouter.post('/', async (c) => {
 		return c.json(response, 500)
 	}
 })
+
+//→ DELETE FILE
+
+filesRouter.delete('/:id', async (c) => {
+	try {
+		//→ GET PARAM
+
+		const id = c.req.param('id')
+
+		//→ DELETE FILE
+
+		const isSuccess = await storage.delete(id)
+
+		//→ CHECK IF FILE IS DELETE
+
+		if (!isSuccess) {
+			const response = makeResponse('error', "File couldn't be deleted", {})
+
+			return c.json(response, 400)
+		}
+
+		//→ RETURN RESPONSE
+
+		const response = makeResponse('success', 'Successfull', {})
+
+		return c.json(response, 200)
+	} catch (e) {
+		console.log('[FILE DELETE] ERROR', e)
+
+		const response = makeResponse('error', 'Something went wrong', {})
+
+		return c.json(response, 500)
+	}
+})
