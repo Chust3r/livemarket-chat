@@ -3,7 +3,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { PORT } from '~consts'
-import { routes } from '~routes'
+import { routes, socketIO } from '~routes'
 
 //→ HONO SERVER
 
@@ -21,7 +21,7 @@ app.route('/', routes)
 
 //→ RUN SERVER
 
-serve(
+const server = serve(
 	{
 		fetch: app.fetch,
 		port: PORT,
@@ -30,3 +30,7 @@ serve(
 		console.log(`Server is running: http://localhost:${info.port}`)
 	}
 )
+
+//→ SOCKET IO SERVER
+
+socketIO(server)

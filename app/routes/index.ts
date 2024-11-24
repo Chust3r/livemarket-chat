@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { authRouter } from './auth'
 import { apiRouter } from './api'
+export * from "./ws"
 
 export const routes = new Hono()
 
