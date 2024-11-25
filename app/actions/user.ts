@@ -53,11 +53,24 @@ export const updateUserInfo = async (id: string, data: Partial<User>) => {
 			id: users.id,
 			email: users.email,
 			username: users.username,
-			status:users.status,
+			status: users.status,
 			avatarUrl: users.avatarUrl,
 			createdAt: users.createdAt,
 			updatedAt: users.updatedAt,
 		})
 
 	return userUpdated
+}
+
+export const validateUsersIds = async (...ids: string[]) => {
+	const users = await db.query.users.findMany({
+		where: (users, { inArray }) => inArray(users.id, ids),
+		columns: {
+			id: true,
+		},
+	})
+
+	if (users.length !== ids.length) return false
+
+	return true
 }
