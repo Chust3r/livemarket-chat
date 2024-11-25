@@ -103,4 +103,5 @@ export const schema = {
 	messages,
 	products,
 	chats,
+	chatParticipants,
 }
