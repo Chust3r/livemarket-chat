@@ -23,7 +23,11 @@ register.post('/', async (c) => {
 
 			const errors = issues.reduce((acc, issue) => {
 				// @ts-ignore
-				acc[issue.path[0]] = issue.message
+				const field = issue.path[0]?.key
+				if (field) {
+					// @ts-ignore
+					acc[field] = issue.message
+				}
 				return acc
 			}, {})
 
