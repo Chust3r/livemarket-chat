@@ -1,37 +1,15 @@
 import type { Server, Socket } from 'socket.io'
 import { createOrGetPrivateChat } from '~actions/chat'
-import { verifyJwt } from '~lib/jwt'
+import { authSocket } from '~middlewares/auth'
 
 //→ CLIENTS MAP (ONLY USERS CONNECTED)
 
 const clients = new Map<string, string>()
 
 export const chatWs = (io: Server) => {
-	//→ ON CONNECT
+	//→ USE AUTH MIDDLEWARE
 
-	io.use(async (socket, next) => {
-		//→ GET JWT TOKEN
-
-		const token = socket.handshake.auth.token
-
-		if (!token) return next(new Error('Authentication error'))
-
-		//→ CHECK IF TOKEN IS VALID
-
-		const payload = await verifyJwt(token)
-
-		if (!payload) return next(new Error('Authentication error'))
-
-		//→ GET USER ID FROM PAYLOAD
-
-		const userId = payload.userId as string
-
-		//→ SET USER ID TO SOCKET
-
-		socket.data.userId = userId
-
-		next()
-	})
+	io.use(authSocket)
 
 	//→ CONNECT A NEW USER TO THE CHAT
 
@@ -88,8 +66,6 @@ export const chatWs = (io: Server) => {
 
 				secondSocket?.join(chat)
 			}
-
-			
 		})
 
 		//→ SEND MESSAGE TO CHAT

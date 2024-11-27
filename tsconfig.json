@@ -40,6 +40,9 @@
       "~tables": [
         "../drizzle/schema.ts"
       ],
+      "~middlewares/*": [
+        "middlewares/*"
+      ]
     }
   }
 }
