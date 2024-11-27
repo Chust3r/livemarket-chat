@@ -28,8 +28,8 @@
       "~db": [
         "lib/db.ts"
       ],
-      "~events/*": [
-        "events/*"
+      "~events": [
+        "events/index.ts"
       ],
       "~routes": [
         "routes/index.ts"

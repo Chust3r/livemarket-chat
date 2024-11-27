@@ -1,111 +1,32 @@
 import type { Server, Socket } from 'socket.io'
-import { createOrGetPrivateChat } from '~actions/chat'
 import { authSocket } from '~middlewares/auth'
-
-//→ CLIENTS MAP (ONLY USERS CONNECTED)
-
-const clients = new Map<string, string>()
+import { chatPrivate, connect, disconnect } from '~events'
 
 export const chatWs = (io: Server) => {
 	//→ USE AUTH MIDDLEWARE
 
 	io.use(authSocket)
 
-	//→ CONNECT A NEW USER TO THE CHAT
+	//→ SOCKET EVENTS
 
-	io.on('connect', (socket: Socket) => {
-		console.log('USER CONNECTED')
+	io.on('connect', async (socket: Socket) => {
+		//→ ON CONNECTION
 
-		//→ GET USER ID FROM SOCKET DATA
+		const params = { io, socket, data: {} }
 
-		const userId = socket.data.userId as string
+		await connect(params)
 
-		//→ TODO:GET ALL CHATS OF THE USER & LISTEN EVENTS
+		//→ ON DISCONNECTION
 
-		//→ ADD USER TO CLIENTS MAP
+		socket.on('disconnect', () => disconnect(params))
 
-		clients.set(userId, socket.id)
+		//→ PRIVATE CHAT
 
-		//→ LISTEN EVENTS
-
-		//→ GET PRIVATE CHAT BETWEEN USERS
-
-		socket.on('chat:private', async (data) => {
-			//→ PARSE DATA & GET DATA
-
-			const { to } = JSON.parse(data) as { to: string }
-
-			//→ GET OR CREATE PRIVATE CHAT
-
-			const chat = await createOrGetPrivateChat(userId, to)
-
-			//→ IF CHAT IS NULL RETURN
-
-			if (!chat) return
-
-			//→ JOIN CURRENT USER TO CHAT
-
-			socket.join(chat)
-
-			//→ SEND CHAT ID TO CLIENT
-
-			socket.emit('chat:private', {
-				id: chat,
+		socket.on('chat:private', async (data) =>
+			chatPrivate({
+				...params,
+				data,
 			})
-
-			//→ JOIN SECOND USER TO CHAT IF IS CONNECTED
-
-			const secondClientSocketId = clients.get(to)
-
-			//→ IF SECOND CLIENT IS CONNECTED
-
-			if (secondClientSocketId) {
-				//→ JOIN SECOND USER TO CHAT
-
-				const secondSocket = io.sockets.sockets.get(secondClientSocketId)
-
-				secondSocket?.join(chat)
-			}
-		})
-
-		//→ SEND MESSAGE TO CHAT
-
-		socket.on('message:send', (data) => {
-			console.log('CLIENT SEND MESSAGE')
-		})
-
-		//→ RECEIVE MESSAGE FROM CHAT
-
-		socket.on('message:receive', (data) => {
-			console.log('CLIENT RECEIVE MESSAGE')
-		})
-
-		//→ MESSAGE DELIVERED
-
-		socket.on('message:delivered', (data) => {
-			console.log('CLIENT MESSAGE DELIVERED')
-		})
-
-		//→ MESSAGE READ
-
-		socket.on('message:read', (data) => {
-			console.log('CLIENT MESSAGE READ')
-		})
-
-		//→ ON RECONNECT
-
-		socket.on('reconnect', () => {
-			console.log('USER RECONNECTED')
-		})
-
-		//→ ON DISCONNECT
-
-		socket.on('disconnect', () => {
-			//→ REMOVE USER FROM CLIENTS MAP
-
-			clients.delete(userId)
-
-			console.log('USER DISCONNECTED')
-		})
+		)
 	})
 }
