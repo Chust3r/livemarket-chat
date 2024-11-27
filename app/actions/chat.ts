@@ -36,7 +36,7 @@ export const createOrGetPrivateChat = async (
 
 	const { rows } = await db.run(query)
 
-	const chatId = rows[0]?.chatId
+	const chatId = rows[0]?.chatId as string
 
 	if (chatId) return chatId
 
