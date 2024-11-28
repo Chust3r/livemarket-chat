@@ -1,8 +1,8 @@
+import { getUserChats } from '~actions/chat'
 import { clients } from '~lib/clients-manager'
 import type { SocketIOEvent } from '~lib/types'
 
 export const connect = async ({ io, socket, data }: SocketIOEvent) => {
-    
 	//→ GET USER ID FROM SOCKET (ONLY IF WAS AUTHENTICATED)
 
 	const userId = socket.data.userId as string
@@ -11,7 +11,16 @@ export const connect = async ({ io, socket, data }: SocketIOEvent) => {
 
 	clients.set(userId, socket.id)
 
-	//→ TODO: GET ALL CHATS WHERE THE USER IS PARTICIPANT
+	//→ GET ALL CHATS WHERE THE USER IS PARTICIPANT
 
-	console.log('USER CONNECTED', userId)
+	const chats = await getUserChats(userId)
+
+	//→ ADD CHAT ID'S TO CLIENT & SUSCRIBE
+
+	socket.data.chats = socket.data.chats || new Set()
+
+	for (const chat of chats) {
+		socket.data.chats.add(chat.chatId)
+		socket.join(chat.chatId)
+	}
 }

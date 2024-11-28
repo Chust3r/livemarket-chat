@@ -77,3 +77,14 @@ export const createOrGetPrivateChat = async (
 
 	return newChatId
 }
+
+export const getUserChats = async (userId: string) => {
+	const chats = await db.query.chatParticipants.findMany({
+		where: (chatParticipants, { eq }) => eq(chatParticipants.userId, userId),
+		columns: {
+			chatId: true,
+		},
+	})
+
+	return chats
+}
