@@ -57,3 +57,13 @@ export const updateUserSchema = object({
 	status: optional(pipe(string(), picklist(['online', 'offline'], 'online'))),
 	avatarUrl: optional(pipe(string(), url())),
 })
+
+
+//→ MESSAGE BODY SCHEMA
+
+export const messageSchema = object({
+	chatId: string(),
+	content: string(),
+	type: pipe(string(), picklist(['text', 'image', 'file'], 'text')),
+})
+

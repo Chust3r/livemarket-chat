@@ -1,6 +1,6 @@
 import type { Server, Socket } from 'socket.io'
 import { authSocket } from '~middlewares/auth'
-import { chatPrivate, connect, disconnect } from '~events'
+import { chatPrivate, connect, disconnect, messageSend } from '~events'
 
 export const chatWs = (io: Server) => {
 	//→ USE AUTH MIDDLEWARE
@@ -24,6 +24,15 @@ export const chatWs = (io: Server) => {
 
 		socket.on('chat:private', async (data) =>
 			chatPrivate({
+				...params,
+				data,
+			})
+		)
+
+		//→ MESSAGE SEND
+
+		socket.on('message:send', async (data) =>
+			messageSend({
 				...params,
 				data,
 			})

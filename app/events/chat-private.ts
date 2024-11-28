@@ -23,11 +23,14 @@ export const chatPrivate = async ({ io, socket, data }: SocketIOEvent) => {
 
 	socket.join(chat)
 
+	//→ ADD CHAT ID TO CLIENT
+
+	socket.data.chats = socket.data.chats || new Set()
+	socket.data.chats.add(chat)
+
 	//→ SEND CHAT ID TO CLIENT
 
-	socket.emit('chat:private', {
-		id: chat,
-	})
+	socket.emit('chat:private', { id: chat })
 
 	//→ TRY JOIN OTHER USER CHAT IF IS CONNECTED
 
@@ -39,7 +42,15 @@ export const chatPrivate = async ({ io, socket, data }: SocketIOEvent) => {
 
 	const secondSocket = io.sockets.sockets.get(secondClientSocketId)
 
+	if (!secondSocket) return
+
 	//→ JOIN PRIVATE CHAT
 
-	secondSocket?.join(chat)
+	secondSocket.join(chat)
+
+	//→ ADD CHAT ID TO CLIENT
+
+	secondSocket.data = secondSocket.data || {}
+	secondSocket.data.chats = secondSocket.data.chats || new Set()
+	secondSocket.data.chats.add(chat)
 }
