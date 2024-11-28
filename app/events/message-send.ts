@@ -1,3 +1,4 @@
+import { saveMessage } from '~actions/message'
 import { clients } from '~lib/clients-manager'
 import type { SocketIOEvent } from '~lib/types'
 import { validate, messageSchema } from '~lib/validation'
@@ -41,7 +42,17 @@ export const messageSend = async ({ io, socket, data }: SocketIOEvent) => {
 		})
 	}
 
-	//→ TODO: SAVE MESSAGE IN DATABASE
+	const message = await saveMessage({
+		chatId,
+		content,
+		type,
+		senderId: userId,
+	})
 
-	console.log('USER MESSAGE SENT', userId, chatId, content, type)
+	//→ IF MESSAGE SAVED SEND MESSAGE:RECEIVE & MESSAGE:SENT
+
+	if (message) {
+		socket.broadcast.to(chatId).emit('message:receive', message)
+		socket.emit('message:sent', message)
+	}
 }
