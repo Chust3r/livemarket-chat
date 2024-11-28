@@ -58,7 +58,7 @@ export const messages = sqliteTable('messages', (t) => ({
 		.notNull()
 		.references(() => chats.id), //→ RELATION WITH CHATS
 	senderId: t
-		.integer({ mode: 'number' })
+		.text()
 		.notNull()
 		.references(() => users.id), //→ RELATION WITH USERS
 	content: t.text().notNull(),
