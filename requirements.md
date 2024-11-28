@@ -32,22 +32,27 @@ API en tiempo real para comunicación en un marketplace, diseñada para garantiz
 
 ## **Eventos WebSocket**
 
-| **Evento**            | **Descripción**                                                                 |
-|------------------------|---------------------------------------------------------------------------------|
-| **`connect`**          | Emitido cuando un usuario se conecta al servidor WebSocket.                     |
-| **`disconnect`**       | Notifica cuando un usuario se desconecta del servidor.                          |
-| **`reconnect`**        | Se emite cuando un usuario recupera la conexión después de una caída.           |
-| **`message:send`**     | Un cliente envía un mensaje a otro usuario a través del servidor.               |
-| **`message:receive`**  | Notifica al receptor que ha recibido un nuevo mensaje.                          |
-| **`message:delivered`**| Confirma la entrega de un mensaje.                                              |
-| **`message:read`**     | Indica que un mensaje fue leído por el receptor.                                |
-| **`message:history`**  | Solicita y envía el historial de mensajes de una conversación.                  |
-| **`user:status`**      | Notifica el estado del usuario (en línea, escribiendo, etc.).                   |
-| **`user:typing`**      | Indica que un usuario está escribiendo en un chat.                              |
-| **`user:block`**       | Evento para bloquear a un usuario específico.                                   |
-| **`user:report`**      | Notifica al servidor que un usuario fue reportado.                              |
-| **`notification:new`** | Evento que notifica al cliente de nuevas interacciones o mensajes.              |
-| **`notification:clear`**| Borra las notificaciones antiguas o leídas.                                    |
+| **Evento**               | **Descripción**                                                                 |
+|--------------------------|---------------------------------------------------------------------------------|
+| **`connect`**             | Emitido cuando un usuario se conecta al servidor WebSocket.                     |
+| **`disconnect`**          | Notifica cuando un usuario se desconecta del servidor.                          |
+| **`reconnect`**           | Se emite cuando un usuario recupera la conexión después de una caída.           |
+| **`message:send`**        | Un cliente envía un mensaje a otro usuario a través del servidor.               |
+| **`message:receive`**     | Notifica al receptor que ha recibido un nuevo mensaje.                          |
+| **`message:delivered`**   | Confirma la entrega de un mensaje.                                              |
+| **`message:read`**        | Indica que un mensaje fue leído por el receptor.                                |
+| **`message:error`**       | Notifica al cliente que ocurrió un error al enviar el mensaje (por ejemplo, si no es válido). |
+| **`message:sent`**        | Notifica al cliente que el mensaje ha sido enviado con éxito y recibido por el servidor. |
+| **`message:edit`**        | Permite editar un mensaje, si no ha sido leído.                                |
+| **`message:delete`**      | Permite eliminar un mensaje, si no ha sido leído.                              |
+| **`message:history`**     | Solicita y envía el historial de mensajes de una conversación.                  |
+| **`user:status`**         | Notifica el estado del usuario (en línea, escribiendo, etc.).                   |
+| **`user:typing`**         | Indica que un usuario está escribiendo en un chat.                              |
+| **`user:block`**          | Evento para bloquear a un usuario específico.                                   |
+| **`user:report`**         | Notifica al servidor que un usuario fue reportado.                              |
+| **`notification:new`**    | Evento que notifica al cliente de nuevas interacciones o mensajes.              |
+| **`notification:clear`**  | Borra las notificaciones antiguas o leídas.                                    |
+
 
 ---
 
