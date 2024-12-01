@@ -68,3 +68,10 @@ export const messageSchema = object({
 		'text'
 	),
 })
+
+//→ MESSAGE DELETE SCHEMA
+
+export const messageDeleteSchema = object({
+	chatId: string('chatId is required'),
+	messageId: string('messageId is required'),
+})
