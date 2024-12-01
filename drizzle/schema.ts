@@ -69,6 +69,7 @@ export const messages = sqliteTable('messages', (t) => ({
 		.notNull()
 		.default('text'),
 	isDeleted: t.integer({ mode: 'boolean' }).notNull().default(false),
+	isReaded: t.integer({ mode: 'boolean' }).notNull().default(false),
 	isEdited: t.integer({ mode: 'boolean' }).notNull().default(false),
 	createdAt: t.text().default(sql`(CURRENT_TIMESTAMP)`),
 	updatedAt: t
