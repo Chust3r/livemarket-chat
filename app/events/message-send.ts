@@ -1,5 +1,4 @@
 import { saveMessage } from '~actions/message'
-import { clients } from '~lib/clients-manager'
 import type { SocketIOEvent } from '~lib/types'
 import { validate, messageSchema } from '~lib/validation'
 

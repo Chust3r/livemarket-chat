@@ -1,6 +1,16 @@
 import type { Server, Socket } from 'socket.io'
 import { authSocket } from '~middlewares/auth'
-import { chatPrivate, connect, disconnect, messageSend } from '~events'
+import {
+	chatPrivate,
+	connect,
+	disconnect,
+	messageSend,
+	messageEdit,
+	messageDelivered,
+	messageRead,
+	messageDelete,
+	messageHistory,
+} from '~events'
 
 export const chatWs = (io: Server) => {
 	//→ USE AUTH MIDDLEWARE
@@ -37,5 +47,50 @@ export const chatWs = (io: Server) => {
 				data,
 			})
 		)
+
+		//→ MESSAGE EDIT
+
+		socket.on('message:edit', async (data) => {
+			messageEdit({
+				...params,
+				data,
+			})
+		})
+
+		//→ MESSAGE DELIVERED
+
+		socket.on('message:delivered', async (data) => {
+			messageDelivered({
+				...params,
+				data,
+			})
+		})
+
+		//→ MESSAGE READ
+
+		socket.on('message:read', async (data) => {
+			messageRead({
+				...params,
+				data,
+			})
+		})
+
+		//→ MESSAGE DELETE
+
+		socket.on('message:delete', async (data) => {
+			messageDelete({
+				...params,
+				data,
+			})
+		})
+
+		//→ MESSAGE HISTORY
+
+		socket.on('message:history', async (data) => {
+			messageHistory({
+				...params,
+				data,
+			})
+		})
 	})
 }

@@ -13,5 +13,5 @@ export const saveMessage = async (message: IMessage) => {
 		.values(message)
 		.returning()
 
-    return messageSaved
+    return messageSaved[0]
 }
